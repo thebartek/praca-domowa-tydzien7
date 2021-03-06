@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>News List</title>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <a class="navbar-brand" th:href="@{/news}">News List</a>
+    <form class="form-inline" th:action="@{/news}" method="get">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search by id" aria-label="Search" th:name="id">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Image</th>
+        <th scope="col">PublishedAt</th>
+        <th scope="col">Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="news: ${newsList}">
+        <th scope="row" th:text="${news.getNewsId()}"></th>
+        <td th:text="${news.getTitle()}"></td>
+        <td th:text="${news.getDescription()}"></td>
+        <td><img width="300px" th:src="${news.getUrlImage()}"/></td>
+        <td th:text="${news.getPublishedArt()}"></td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="${'#' + news.getNewsId()}">Edit</button></td>
+
+        <div class="modal fade" th:id="${news.getNewsId()}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle"><a th:text="${'Edit News: ' + news.getTitle()}"></a></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/news/edit/{id}(id=${news.getNewsId()})}" th:object="${newNews}" method="post">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input class="form-control" id="title" placeholder="Enter Title" th:field="*{title}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input class="form-control" id="description" placeholder="Enter Description" th:field="*{description}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="urlImage">ImageUrl</label>
+                                <input class="form-control" id="urlImage" placeholder="Enter mageUrl" th:field="*{urlImage}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="publishedArt">PublishedAt</label>
+                                <input class="form-control" id="publishedArt" placeholder="Enter PublishedAt" th:field="*{publishedArt}"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Edit car</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
